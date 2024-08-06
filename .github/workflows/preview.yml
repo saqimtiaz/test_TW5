@@ -7,6 +7,8 @@ on:
       - reopened
       - synchronize
       - closed
+    paths-ignore:
+      - '.github/**'
 
 concurrency:
   group: deploy-preview-${{ github.ref }}
@@ -42,4 +44,4 @@ jobs:
           source-dir: ./build/
           preview-branch: master
           deploy-repository: saqimtiaz/test_tiddlywiki.com-gh-pages
-          token: ${{ secrets.DEPLOY_PREVIEW }}
+          token: ${{ secrets.DEPLOY_PREVIEW }} # need a token to comment on the PR
