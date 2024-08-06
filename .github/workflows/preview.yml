@@ -20,12 +20,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-		
+	
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-		  
+  
       - name: Build
         if: github.event.action != 'closed' # Skip the build if the PR has been closed
         run: |
