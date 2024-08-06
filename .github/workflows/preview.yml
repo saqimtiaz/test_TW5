@@ -23,7 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3  #Explicitly checkout the PR
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha }} #refs/pull/${{ github.event.number }}/merge
           persist-credentials: false
 
       - name: Setup node
