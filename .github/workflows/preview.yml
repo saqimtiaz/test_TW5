@@ -37,4 +37,4 @@ jobs:
           source-dir: ./build/
           preview-branch: master
           deploy-repository: saqimtiaz/test_tiddlywiki.com-gh-pages
-          token: ${{ DEPLOY_PREVIEW }}
+          token: ${{ secrets.DEPLOY_PREVIEW }}
