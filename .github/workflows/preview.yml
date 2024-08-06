@@ -1,25 +1,30 @@
 name: Deploy PR previews
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - reopened
       - synchronize
       - closed
 
-concurrency: preview-${{ github.ref }}
+concurrency:
+  group: deploy-preview-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy-preview:
     runs-on: ubuntu-20.04
-    permissions: # Ensure that the default token can only write to pull requests
+    permissions:
       contents: read
-      pull-requests: write
+      pull-requests: read
    
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  #Explicitly checkout the PR
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
 
       - name: Setup node
         uses: actions/setup-node@v4
