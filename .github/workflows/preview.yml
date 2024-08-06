@@ -1,0 +1,40 @@
+name: Deploy PR previews
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+concurrency: preview-${{ github.ref }}
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-20.04
+    permissions: # Ensure that the default token can only write to pull requests
+      contents: read
+      pull-requests: write
+   
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+		
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+		  
+      - name: Build
+        if: github.event.action != 'closed' # Skip the build if the PR has been closed
+        run: |
+          node tiddlywiki ./tiddlywiki/editions/tw5.com --output ./build --build index
+
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./build/
+          preview-branch: master
+          deploy-repository: saqimtiaz/test_tiddlywiki.com-gh-pages
+          token: ${{ DEPLOY_PREVIEW }}
